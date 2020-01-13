@@ -5,4 +5,6 @@ import 'bootstrap/dist/css/bootstrap.css';
 import './global.css';
 import App from './components/App';
 
-ReactDOM.render(<App/>, document.getElementById('root'));
+const container = document.getElementById('app');
+
+ReactDOM.render(<App />, container);
