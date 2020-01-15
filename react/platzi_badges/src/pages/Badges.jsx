@@ -8,7 +8,11 @@ import PageLoading from '../components/PageLoading';
 import PageError from '../components/PageError';
 import api from '../api';
 
-class Badges extends Component {    
+class Badges extends Component {
+    // Las llamadas a una API siguen un patrón de tres estados:
+    // Loading: La petición se envía y esperamos una respuesta.
+    // Error: Se deja un mensaje para el usuario con el error.
+    // Data: Los datos requeridos llegan.
     state = {
         loading: true,
         error: null,
@@ -19,6 +23,8 @@ class Badges extends Component {
         this.fetchData();
     }
 
+    // La función que hace una llamada a una API sera asíncrona.
+    // Esta llamada hace una petición GET a una dirección de internet y lo que sea que exista ahí será devuelto.
     fetchData = async () => {
         this.setState({ loading: true, error: null });
 

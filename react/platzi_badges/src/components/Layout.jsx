@@ -6,6 +6,7 @@ const Layout = props =>
     (
         <Fragment>
             <Navbar />
+            {console.log('props', props)}
             {props.children}
         </Fragment>
     );

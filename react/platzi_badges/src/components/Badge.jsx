@@ -1,12 +1,15 @@
 import React, { Component } from 'react';
 
 import './styles/Badge.css';
+// El source de las imágenes en React puede contener direcciones web o puede importarse por referencia directa.
 import confLogo from '../images/badge-header.svg';
 import Gravatar from './Gravatar';
 
 class Badge extends Component {
-    render() {
-
+    // Los componentes requieren el método render para definir el resultado que aparecerá en pantalla.
+    // Los props son atributos de un componente como class, src, etc.
+    // Los props salen de una variable de la clase que se llama this.props y los valores son asignados directamente en el ReactDOM.render().
+    render() {        
     return (
       <div className="Badge">
         <div className="Badge__header">
