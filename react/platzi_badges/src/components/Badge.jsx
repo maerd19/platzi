@@ -8,7 +8,7 @@ import Gravatar from './Gravatar';
 class Badge extends Component {
     // Los componentes requieren el método render para definir el resultado que aparecerá en pantalla.
     // Los props son atributos de un componente como class, src, etc.
-    // Los props salen de una variable de la clase que se llama this.props y los valores son asignados directamente en el ReactDOM.render().
+    // Los props salen de la variable de la clase que se llama this.props y los valores son asignados directamente en el ReactDOM.render().
     render() {        
     return (
       <div className="Badge">

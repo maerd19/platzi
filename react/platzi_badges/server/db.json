@@ -1,15 +1,6 @@
 {
   "badges": [
     {
-      "id": "22330587-c700-4d00-911d-91de63db1f42",
-      "firstName": "Dustin",
-      "lastName": "Stehr",
-      "email": "Lue.Funk@hotmail.com",
-      "jobTitle": "Legacy Infrastructure Consultant",
-      "twitter": "DustinStehr77585-9157",
-      "avatarUrl": "https://www.gravatar.com/avatar/272e74beaee600c8ab957ddee8444495?d=identicon"
-    },
-    {
       "id": "f1183526-aff1-46da-8bfb-976563c6f696",
       "firstName": "Karlee",
       "lastName": "Satterfield",
@@ -51,6 +42,14 @@
       "jobTitle": "Lawyer",
       "twitter": "sparragus",
       "id": "7medAJ4"
+    },
+    {
+      "firstName": "Alejandro",
+      "lastName": "Hernández",
+      "email": "alejandrohernang@gmail.com",
+      "jobTitle": "FrontEnd Engineer",
+      "twitter": "maerd19",
+      "id": "tKkfbr_"
     }
   ]
 }
