@@ -9,6 +9,7 @@ import api from '../api';
 
 class BadgeEdit extends Component {
   state = {
+    // Como esta pagina comienza con una peticion el loading se inicializa en true
     loading: true,
     error: null,
     form: {
@@ -21,21 +22,26 @@ class BadgeEdit extends Component {
   };
 
   componentDidMount(){
+    // Al ocurrir el componentDidMount buscare los datos
     this.fetchData()
   }
 
+  // Al momento de pedir datos se utiliza una funcion asincrona
   fetchData = async e => {
     this.setState({ loading: true, error: null });
 
     try {
+        // read tomara el ID del badge que se desea modificar
       const data = await api.badges.read(
-        // Este prop contendra el ID del badge que se desea modificar
+        // read se encuentra en la url. React router permite leerlo usando uno de los props que los routes le pasa a los componentes (this.props.match)
+        // Cada una de las variables insertadas en el path que se declaro en la ruta puede accederse dentro del objeto params.
         this.props.match.params.badgeId
       )
-
+      // Si se recuperan los datos exitosamente se almacenaran dentro del form.
       this.setState({ loading: false, form: data })
     } catch (error) {
-      this.setState({ loading: true, error: error });      
+      // Si hay un error se detiene el loading y se almacena el error para mostrase.
+      this.setState({ loading: false, error: error });      
     }
   }
 
@@ -55,7 +61,7 @@ class BadgeEdit extends Component {
     try {
       await api.badges.update(this.props.match.params.badgeId, this.state.form);
       this.setState({ loading: false });      
-
+      // Despues de hacer la actualizacion nos moveremos a la vista de badges donde veremos los cambios ya hechos
       this.props.history.push('/badges');
     } catch (error) {
       this.setState({ loading: false, error: error });
