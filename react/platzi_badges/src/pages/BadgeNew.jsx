@@ -8,7 +8,10 @@ import PageLoading from '../components/PageLoading';
 import api from '../api';
 
 class BadgeNew extends Component {
-    state = {
+  // LiftingUpState: Hay ocasiones en las cuales hay un estado que tenemos que compartir con dos o más componentes.
+  //                 El estado se levanta al componente en comun mas cercano a los componentes que lo usan.
+  // Se coloca el estado en una ubicacion en la que este disponible para pasarse como props a los componentes.
+  state = {
 	loading: false,
 	error: null,
         form: {
@@ -17,13 +20,14 @@ class BadgeNew extends Component {
             email: '',
             jobTitle: '',
             twitter: '',
-	    },
-     };
+	      }
+  };
 
   handleChange = e => {
     this.setState({
       form: {
         ...this.state.form,
+        // El input que llame a esta funcion reemplazara el valor en los corchetes por su nombre.
         [e.target.name]: e.target.value,
       },
     });

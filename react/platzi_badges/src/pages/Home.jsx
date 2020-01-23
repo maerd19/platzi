@@ -19,6 +19,7 @@ export default class Home extends Component {
               />
 
               <h1>Badge Management System</h1>
+              {/* Link toma el lugar del elemento <a> y evita que se recargue la página completamente al actualizar la url. */}
               <Link className="btn btn-primary" to="/badges">
                 Start
               </Link>

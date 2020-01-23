@@ -26,26 +26,24 @@ class BadgesListItem extends Component {
   }
 }
 
-// customHook
+// Los customHooks deben empezar con use.
 function useSearchBadges(badges) {
     const [ query, setQuery ] = useState('');
     const [ filteredBadges, setFilteredBadges ] = useState(badges);
 
-    // useMemo Devuelve un valor memorizado.
-    // useMemo solo volverá a calcular el valor memorizado cuando una de las dependencias haya cambiado. 
+    // useMemo devuelve un valor memorizado y solo volverá a calcular el valor cuando una de las dependencias haya cambiado. 
     // Esta optimización ayuda a evitar cálculos costosos en cada render.
-    // El primer argumento de useMemo es una funcion; el segundo argumento es una lista. 
-    // En la lista se almacenaran los argumentos que siempre que sean iguales, la contestacion si ya esta memorizada, la regresa de inmediato sino la calcula por primer vez
+    // Los argumentos de useMemo son una funcion y una lista. 
+    // La lista almacenara los argumentos usados previamente. La contestacion, si ya esta memorizada, regresara de inmediato en caso contrario se calcula por primer vez.
     useMemo(() => {
         const result = badges.filter(badge => {
-          // si la cadena formada por nombre y apellido incluye lo que buscamos (query) regresara true
+          // Si la cadena formada por nombre y apellido incluye lo que buscamos (query) la funcion regresara true.
           return `${badge.firstName} ${badge.lastName}`
-            // Se convertira el nombre y el query a lowerCase para hacer la busqueda independientemente de que se usen o no mayusculas. (normalizar)
+            // nombre y query se convertiran a lowerCase para hacer la busqueda independientemente de que se usen o no mayusculas. (normalizar)
             .toLowerCase()
             .includes(query.toLowerCase());
-      });
-
-      // el valor del filtro se almacena en una variable que pueda usarse fuera de useMemo.
+        });
+      // El valor del filtro se almacena en una variable que pueda usarse fuera de useMemo.
       setFilteredBadges(result);
     }, [badges, query]);
 
@@ -57,14 +55,15 @@ function BadgesList(props) {
 
     const { query, setQuery, filteredBadges } = useSearchBadges(badges);
 
-    // Estaremos pendientes a los badges que estan filtrados; no a todos los badges ya
+    // Ya no estaremos pendientes de todos los badges sino unicamente de las que estan filtrados.
     // if (badges.length === 0) {
     if (filteredBadges.length === 0) {
       return (
         <div>
+          {/* Buscador */}
           <div className="form-group">
             <label>Filter Badges</label>
-            {/* Cada vez que haya un cambio en el input se guaradara el nuevo valor en value */}
+            {/* Cada vez que onChange detecte un cambio en el input se guardara el nuevo valor en query */}
             <input 
               type="text" 
               className="form-control"
@@ -83,6 +82,7 @@ function BadgesList(props) {
     }
     return (
       <div className="BadgesList">
+        {/* Buscador */}
         <div className="form-group">
           <label>Filter Badges</label>
           <input 
@@ -95,6 +95,7 @@ function BadgesList(props) {
           />
         </div>
         <ul className="list-unstyled">
+          {/* Se renderizan las badges obtenidas de la busqueda */}
           {filteredBadges.map(badge => {
             return (
               <li key={badge.id}>

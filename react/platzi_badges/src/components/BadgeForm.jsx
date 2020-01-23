@@ -2,12 +2,7 @@ import React, { Component } from 'react';
 
 class BadgeForm extends Component {
 
-
-    handleClick = e => {
-        console.log('Button was clicked');
-    };
-
-  render() {
+ render() {
     return (
       <div>
         <form onSubmit={this.props.onSubmit}>
@@ -18,6 +13,7 @@ class BadgeForm extends Component {
               className="form-control"
               type="text"
               name="firstName"
+              // El prop value convierte los inputs de no controlados a controlados dotandolos de una unica fuente de informacion proveniente de los props.
               value={this.props.formValues.firstName}
             />
           </div>
@@ -66,7 +62,7 @@ class BadgeForm extends Component {
             />
           </div>
 
-          <button onClick={this.handleClick} className="btn btn-primary">
+          <button className="btn btn-primary">
             Save
           </button>
 
