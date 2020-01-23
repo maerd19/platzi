@@ -39,7 +39,7 @@
       "firstName": "Carolynn",
       "lastName": "Kaufman",
       "email": "carolynn@example.com",
-      "jobTitle": "Lawyer",
+      "jobTitle": "Phylosopher",
       "twitter": "sparragus",
       "id": "7medAJ4"
     },
@@ -58,6 +58,14 @@
       "jobTitle": "Full Stack",
       "twitter": "test123",
       "id": "VBXMf82"
+    },
+    {
+      "firstName": "Adrian",
+      "lastName": "Hernandez Torres",
+      "email": "adritorres@gmail.com",
+      "jobTitle": "Student",
+      "twitter": "bacumbacum",
+      "id": "WKGcS6W"
     }
   ]
 }
