@@ -12,7 +12,8 @@
     "build:plugins": "webpack --config ./plugins/webpack.config.js",
     "build:dev": "webpack-dev-server --config ./webpack-dev-server/webpack.config.js",
     "build:babel": "webpack-dev-server --config ./babel/webpack.config.js",
-    "build:url-loader": "webpack-dev-server --config ./url-loader/webpack.config.js"
+    "build:url-loader": "webpack-dev-server --config ./url-loader/webpack.config.js",
+    "build:prepro": "webpack-dev-server --config ./prepro/webpack.config.js"
   },
   "keywords": [
     "webpack"
@@ -33,8 +34,16 @@
     "css-loader": "3.4.2",
     "file-loader": "5.0.2",
     "html-webpack-plugin": "3.2.0",
+    "less": "3.10.3",
+    "less-loader": "5.0.0",
     "mini-css-extract-plugin": "0.9.0",
+    "node-sass": "4.13.1",
+    "postcss-loader": "3.0.0",
+    "postcss-nested": "4.2.1",
+    "sass-loader": "8.0.2",
     "style-loader": "1.1.3",
+    "stylus": "0.54.7",
+    "stylus-loader": "3.0.2",
     "url-loader": "3.0.0",
     "webpack": "4.32.2",
     "webpack-cli": "3.3.10",
