@@ -1,0 +1,12 @@
+body {
+    background: lightskyblue;
+    display: flex;
+    align-content: center;
+    justify-content: center;
+    min-height: 100vh;
+    margin: 0;
+    font-size: 40px;
+    font-family: system-ui;
+    text-shadow: 1px 1px 1px black;
+    color: white;
+}

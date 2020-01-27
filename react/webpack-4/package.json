@@ -11,17 +11,24 @@
     "build:css": "webpack --config ./css-style-loader/webpack.config.js",
     "build:plugins": "webpack --config ./plugins/webpack.config.js",
     "build:dev": "webpack-dev-server --config ./webpack-dev-server/webpack.config.js",
-    "build:babel": "webpack-dev-server --config ./babel/webpack.config.js"
+    "build:babel": "webpack-dev-server --config ./babel/webpack.config.js",
+    "build:react": "webpack-dev-server --config ./react/webpack.config.js"
   },
   "keywords": [
     "webpack"
   ],
   "author": "",
   "license": "MIT",
-  "dependencies": {},
+  "dependencies": {
+    "@babel/runtime": "7.8.3",
+    "react": "16.12.0",
+    "react-dom": "16.12.0"
+  },
   "devDependencies": {
     "@babel/core": "7.8.3",
+    "@babel/plugin-transform-runtime": "7.8.3",
     "@babel/preset-env": "7.8.3",
+    "@babel/preset-react": "7.8.3",
     "babel-loader": "8.0.6",
     "css-loader": "3.4.2",
     "html-webpack-plugin": "3.2.0",
