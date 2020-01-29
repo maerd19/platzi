@@ -1,5 +1,6 @@
 const path = require('path')
 const HtmlWebpackPlugin = require('html-webpack-plugin')
+const MiniCssExtractPlugin = require('mini-css-extract-plugin')
 const webpack = require('webpack')
 
 module.exports = {
@@ -12,11 +13,6 @@ module.exports = {
         path: path.resolve(__dirname, 'dist'),
         filename: 'js/[name].js'
     },
-    devServer: {
-        hot: true,
-        open: true,
-        port: 9000,
-    },
     module: {
         rules: [
             {
@@ -27,7 +23,9 @@ module.exports = {
             {
                 test: /\.css$/,
                 use: [
-                    'style-loader',
+                    {
+                        loader: MiniCssExtractPlugin.loader
+                    },
                     {
                         loader: 'css-loader',
                         options: {
@@ -40,7 +38,9 @@ module.exports = {
             {
                 test: /\.less$/,
                 use: [
-                    'style-loader',
+                    {
+                        loader: MiniCssExtractPlugin.loader
+                    },
                     'css-loader',
                     'less-loader'
                 ]
@@ -48,7 +48,9 @@ module.exports = {
             {
                 test: /\.scss$/,
                 use: [
-                    'style-loader',
+                    {
+                        loader: MiniCssExtractPlugin.loader
+                    },
                     'css-loader',
                     'sass-loader'
                 ]
@@ -56,7 +58,9 @@ module.exports = {
             {
                 test: /\.styl$/,
                 use: [
-                    'style-loader',
+                    {
+                        loader: MiniCssExtractPlugin.loader
+                    },
                     'css-loader',
                     'stylus-loader'
                 ]
@@ -74,21 +78,19 @@ module.exports = {
         ]
     },
     plugins: [
+        // Se tiene que instanciar este plugin para configurar a donde se enviaran los archivos generados
+        new MiniCssExtractPlugin({
+            filename: 'css/[name].css',
+            chunkFilename: 'css/[id].css'
+        }),
         new webpack.HotModuleReplacementPlugin(),
         new HtmlWebpackPlugin({
             title: 'webpack-dev-server',
             template: path.resolve(__dirname, 'index.html'),
+        }),
+        new webpack.DllReferencePlugin({
+            // Este archivo se creara cuando se corra DllPlugin
+            manifest: require('./modules-manifest.json')
         })
-    ],
-    optimization: {
-        splitChunks: {
-            // all: indica a webpack que optimice, lo mejor que pueda, los módulos sin importar si son cargados de forma dinámica o no-dinámica.
-            chunks: 'all',
-            // Tamano minimo que deben tener los chunks para considerarse y ser incluidos en el commons
-            // Con 0 cualquier archivo que se duplique tambien entrara
-            minSize: 0,
-            // Sera el nombre del modulo en donde se exportara el codigo que se repite en todas las paginas
-            name: 'commons'
-        }
-    }
+    ]
 }
