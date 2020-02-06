@@ -7,6 +7,6 @@ const Footer = () => (
         <a href="/">Declaración de privacidad</a>
         <a href="/">Centro de ayuda</a>
   </footer>
-)
+);
 
 export default Footer;
