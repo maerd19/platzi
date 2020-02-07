@@ -67,4 +67,4 @@ const mapStateToProps = state => {
 // El 1er parametro de connect solicita al provider los valores que se mapean del estado.
 // El 2do paramtro solicita las acciones 
 // Si no se tiene alguno de los parametros se envia null
-export default connect(mapStateToProps, null)(Home)
+export default connect(mapStateToProps, null)(Home);

@@ -22,6 +22,11 @@ const reducer = (state, action) => {
                 // 2.- Transmitimos el objeto que estamos creando en el action y los asignamos a user.
                 user: action.payload
             }
+        case 'LOGOUT_REQUEST':
+            return {
+                ...state,
+                user: action.payload
+            }
         default: 
             // Si type no coincide con ninguno de los casos regresara nuestro estado principal
             return state;

@@ -9,7 +9,7 @@ import playIcon from '../assets/static/play-icon.png';
 import plusIcon from '../assets/static/plus-icon.png';
 import removeIcon from '../assets/static/remove-icon.png';
 
-const CarouselItem = (props) => {
+const CarouselItem = props => {
     const { id, cover, title, year, contentRating, duration, isList, myList } = props;
     // 3.- Definimos los metodo que manejaran las acciones provenientes del actions
     const handleSetFavorite = () => {
@@ -21,7 +21,7 @@ const CarouselItem = (props) => {
         })
     }
     const handleDeleteFavorite = itemId => {
-        props.deleteFavorite(itemId)
+        props.deleteFavorite(itemId);
     }
     return (
     <div className="carousel-item">
@@ -66,8 +66,8 @@ CarouselItem.propTypes = {
 
 // 2.1.- Traemos los elementos que necesitamos del estado inicial para pasarlos como props a nuestro componente.
 const mapStateToProps = state => {
-    return { myList: state.myList }
-}
+    return { myList: state.myList };
+};
 // 2.2.- Traemos las acciones que modificaran los valores del estado inicial para pasarlos como props a nuestro componente.
 const mapDispatchToProps = {
     setFavorite,
