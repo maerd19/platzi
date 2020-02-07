@@ -1,10 +1,10 @@
 import React, { Fragment } from 'react';
+// Connect nos ayuda a conectar un componente a redux
 import { connect } from 'react-redux';
 import Search from '../components/Search';
 import Categories from '../components/Categories';
 import Carousel from '../components/Carousel';
 import CarouselItem from '../components/CarouselItem';
-import useInitialState from '../hooks/useInitialState';
 import '../assets/styles/Home.scss';
 
 const Home = ({ mylist, trends, originals }) => {
@@ -38,12 +38,19 @@ const Home = ({ mylist, trends, originals }) => {
   );
 }
 
+// Esta funcion nos traera los props del estado
+// Los props que se solicitaran seran en funcion de la informacion que se usa dentro del componente.
+// En este componente se usan mylist, trends, originals por lo que seran los mismos datos que importaremos de nuestro estado inicial.
 const mapStateToProps = state => {
   return {
-    mylist: state.mylist,
+    myList: state.myList,
     trends: state.trends,
     originals: state.originals
   };
 };
 
+// Union del conector con el componente que se exporta.
+// Este export reemplaza al export default Home;
+// El 1er parametro de connect solicita al provider informacion del estado
+// El 2do paramtro solicita las acciones 
 export default connect(mapStateToProps, null)(Home)

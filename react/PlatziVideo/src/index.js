@@ -1,14 +1,19 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
+// Provider encapsula los componente y transmite la informacion del store a cada componente para extraer esa información en cualquier parte de la aplicación.
 import { Provider } from 'react-redux';
 import { createStore } from 'redux';
 import reducer from './reducers';
 import App from './routes/App';
 
+// initialState contendra toda la informacion solicitada anteriormente mediante la Fake API
+// osea, toda la data necesaria para inicializar nuestro estado
 const initialState = {
+    // En user almacenaremos la data inicial del usuario
     "user": {},
+    // Playing nos permitira saber si estamos reproduciendo o no un video
     "playing": {},
-    "mylist": [],
+    "myList": [],
     "trends": [
     {
         "id": 2,
@@ -174,6 +179,8 @@ const initialState = {
 const store = createStore(reducer, initialState)
 
 ReactDOM.render(
+    // La aplicacion se inicializa con el provider
+    // El provider pasara el store como parametro y asi estaremos conectando toda nuestra aplicacion con la data inicial.
     <Provider store={store}>
         <App />
     </Provider>, 
