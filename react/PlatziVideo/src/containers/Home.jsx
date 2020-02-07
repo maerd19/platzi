@@ -7,14 +7,15 @@ import Carousel from '../components/Carousel';
 import CarouselItem from '../components/CarouselItem';
 import '../assets/styles/Home.scss';
 
-const Home = ({ mylist, trends, originals }) => {
+const Home = ({ myList, trends, originals }) => {
+
   return (
     <Fragment>
       <Search />
-      {mylist.length > 0 &&
+      {myList.length > 0 &&
         <Categories title="Mi Lista">
           <Carousel>
-            {mylist.map(item =>
+            {myList.map(item =>
               <CarouselItem key={item.id} {...item} />
             )}
           </Carousel>
