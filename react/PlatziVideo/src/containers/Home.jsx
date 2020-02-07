@@ -12,7 +12,7 @@ const Home = ({ myList, trends, originals }) => {
 
   return (
     <Fragment>
-      <Search />
+      <Search isHome/>
       {/* 4.- Hacemos render de los elementos mapeados del estado inicial */}
       {myList.length > 0 &&
         <Categories title="Mi Lista">
