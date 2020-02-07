@@ -8,8 +8,8 @@ import Layout from '../components/Layout';
 
 const App = () => (
     <BrowserRouter>
-        <Switch>
-            <Layout>
+        <Layout>
+            <Switch>
                 {/* 1.- Home se conecta con redux. */}
                 {/* 2.- Trae la informacion del estado inicial */}
                 {/* 3.- Hace render de cada uno de los elementos del estado inicial */}
@@ -17,8 +17,8 @@ const App = () => (
                 <Route exact path="/login" component={Login} />
                 <Route exact path="/register" component={Register} />
                 <Route component={NotFound} />
-            </Layout>            
-        </Switch>        
+            </Switch>            
+        </Layout>        
     </BrowserRouter>
 );
 

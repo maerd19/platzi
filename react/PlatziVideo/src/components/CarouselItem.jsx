@@ -2,7 +2,7 @@ import React from 'react';
 // Connect nos ayuda a conectar este componente a redux para disponer del estado o para enviar valores a nuestros actions
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
-// 1.- Importamos de actions el metodo que se comunica con el reducer
+// 1.- Importamos de actions los metodos del action que se comunicaran con el reducer
 import { setFavorite, deleteFavorite } from '../actions';
 import '../assets/styles/components/CarouselItem.scss';
 import playIcon from '../assets/static/play-icon.png';
@@ -10,9 +10,8 @@ import plusIcon from '../assets/static/plus-icon.png';
 import removeIcon from '../assets/static/remove-icon.png';
 
 const CarouselItem = (props) => {
-    const { id, cover, title, year, contentRating, duration, myList, isList } = props;
-    // 3.- Definimos un metodo que manejara el guardado a nuestros favoritos
-    // Este metodo hara uso de setFavorite que recibira el payload que se envia al reducer
+    const { id, cover, title, year, contentRating, duration, isList, myList } = props;
+    // 3.- Definimos los metodo que manejaran las acciones provenientes del actions
     const handleSetFavorite = () => {
         const exist = myList.find(item => item.id === id);
         (exist) ? alert('Ya has agregado este elemento a tus favoritos')
@@ -65,11 +64,11 @@ CarouselItem.propTypes = {
     duration: PropTypes.number
 }
 
+// 2.1.- Traemos los elementos que necesitamos del estado inicial para pasarlos como props a nuestro componente.
 const mapStateToProps = state => {
     return { myList: state.myList }
 }
-
-// 2.- Mapeamos dentro de nuestro componente las acciones que modificaran los valores del estado principal.
+// 2.2.- Traemos las acciones que modificaran los valores del estado inicial para pasarlos como props a nuestro componente.
 const mapDispatchToProps = {
     setFavorite,
     deleteFavorite

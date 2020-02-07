@@ -1,22 +1,29 @@
 // El reducer se encarga de entender que es lo que esta pasando y como va a actualizar el estado
 const reducer = (state, action) => {
-    switch (action.type) {
-        // logica para manejar un estado en particular
+    switch (action.type) {        
         case 'SET_FAVORITE':
             return {
-                // 1.- traemos el state actual
+                // 1.- Traemos el state actual.
                 ...state,
                 // 2.- Indicamos el elemento que cambiara dentro del estado y los elementos nuevos que se agregaran al estado principal.
                 myList: [...state.myList, action.payload]
             }
         case 'DELETE_FAVORITE':
-                return {
-                    ...state,
-                    // Usaremos filter para crear un nuevo array con todos los elementos que cumplan la condicion implementada en la funcion
-                    // Evaluaremos el valor id de nuestro elemento para compararlo si esta en la lista y crear una desigualdad para compararlo con el contenido de action.payload
-                    myList: state.myList.filter(items => items.id !== action.payload)
-                }
+            return {
+                // 1.- Traemos el state actual.
+                ...state,
+                // 2.- Usamos filter para obtener los elementos que cumplan la condicion de la funcion.
+                myList: state.myList.filter(items => items.id !== action.payload)
+            }
+        case 'LOGIN_REQUEST':
+            return {
+                // 1.- Traemos el state actual.
+                ...state,
+                // 2.- Transmitimos el objeto que estamos creando en el action y los asignamos a user.
+                user: action.payload
+            }
         default: 
+            // Si type no coincide con ninguno de los casos regresara nuestro estado principal
             return state;
     }
 }
