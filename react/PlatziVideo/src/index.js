@@ -13,6 +13,7 @@ const initialState = {
     "user": {},
     // Playing nos permitira saber si estamos reproduciendo o no un video
     "playing": {},
+    // myList contendra nuestros videos favoritos
     "myList": [],
     "trends": [
     {
@@ -179,7 +180,6 @@ const initialState = {
 const store = createStore(reducer, initialState)
 
 ReactDOM.render(
-    // La aplicacion se inicializa con el provider
     // El provider pasara el store como parametro y asi estaremos conectando toda nuestra aplicacion con la data inicial.
     <Provider store={store}>
         <App />

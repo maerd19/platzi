@@ -1,19 +1,28 @@
 import React from 'react';
+// Connect nos ayuda a conectar este componente a redux para disponer del estado o para enviar valores a nuestros actions
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
-import { setFavorite } from '../actions';
+// 1.- Importamos de actions el metodo que se comunica con el reducer
+import { setFavorite, deleteFavorite } from '../actions';
 import '../assets/styles/components/CarouselItem.scss';
 import playIcon from '../assets/static/play-icon.png';
 import plusIcon from '../assets/static/plus-icon.png';
+import removeIcon from '../assets/static/remove-icon.png';
 
 const CarouselItem = (props) => {
-    const { cover, title, year, contentRating, duration } = props;
+    const { id, cover, title, year, contentRating, duration, myList, isList } = props;
+    // 3.- Definimos un metodo que manejara el guardado a nuestros favoritos
+    // Este metodo hara uso de setFavorite que recibira el payload que se envia al reducer
     const handleSetFavorite = () => {
-        // setFavorite es la funcion de nuestro action
-        // Recibira un objeto con los elementos que se reciben desde props
+        const exist = myList.find(item => item.id === id);
+        (exist) ? alert('Ya has agregado este elemento a tus favoritos')
+        :
         props.setFavorite({
-            cover, title, year, contentRating, duration
+            id, cover, title, year, contentRating, duration
         })
+    }
+    const handleDeleteFavorite = itemId => {
+        props.deleteFavorite(itemId)
     }
     return (
     <div className="carousel-item">
@@ -21,12 +30,23 @@ const CarouselItem = (props) => {
         <div className="carousel-item__details">
             <div>             
                 <img className="carousel-item__details--img" src={playIcon} alt="Play Icon" />
-                <img 
-                    className="carousel-item__details--img" 
-                    src={plusIcon} 
-                    alt="Plus Icon"
-                    onClick={handleSetFavorite}
-                />
+
+                {isList ?
+                    <img 
+                        className="carousel-item__details--img"
+                        src={removeIcon}
+                        alt="Remove Icon"
+                        onClick={() => handleDeleteFavorite(id)}
+                    />
+                    :
+                    <img 
+                        className="carousel-item__details--img" 
+                        src={plusIcon} 
+                        alt="Plus Icon"
+                        onClick={handleSetFavorite}
+                    />
+                }
+                
             </div>
             <p className="carousel-item__details--title">{title}</p>
             <p className="carousel-item__details--subtitle">
@@ -45,9 +65,16 @@ CarouselItem.propTypes = {
     duration: PropTypes.number
 }
 
-const mapDispatchToProps = {
-    setFavorite
+const mapStateToProps = state => {
+    return { myList: state.myList }
 }
 
-// export default CarouselItem;
-export default connect(null, mapDispatchToProps)(CarouselItem)
+// 2.- Mapeamos dentro de nuestro componente las acciones que modificaran los valores del estado principal.
+const mapDispatchToProps = {
+    setFavorite,
+    deleteFavorite
+}
+
+// 4.- Union de redux y del componente que se exporta.
+// Este export reemplaza al export default HomeCarouselItem;
+export default connect(mapStateToProps, mapDispatchToProps)(CarouselItem)
