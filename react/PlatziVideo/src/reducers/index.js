@@ -27,6 +27,11 @@ const reducer = (state, action) => {
                 ...state,
                 user: action.payload
             }
+        case 'REGISTER_REQUEST':
+            return {
+                ...state,
+                user: action.payload
+            }
         default: 
             // Si type no coincide con ninguno de los casos regresara nuestro estado principal
             return state;

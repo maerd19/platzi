@@ -21,3 +21,9 @@ export const logoutRequest = payload => ({
     type: 'LOGOUT_REQUEST',
     payload
 });
+
+// action para manejar la informacion del register
+export const registerRequest = payload => ({
+    type: 'REGISTER_REQUEST',
+    payload
+});

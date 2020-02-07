@@ -1,22 +1,70 @@
-import React from 'react';
+import React, { useState } from 'react';
+import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
+import { registerRequest } from '../actions';
 import '../assets/styles/components/Register.scss';
 
-const Register = () => (
-    <section className="register">
-        <section className="register__container">
-        <h2>Regístrate</h2>
-        <form className="register__container--form">
-            <input className="input" type="text" placeholder="Nombre" />
-            <input className="input" type="text" placeholder="Correo" />
-            <input className="input" type="password" placeholder="Contraseña" />
-            <button className="button">Registrarme</button>
-        </form>
-        <Link to="/login">
-            Iniciar sesión
-        </Link>
-        </section>
-    </section>
-);
+const Register = props => {
+    // Usaremos hooks para manejar lo que vamos a hacer con nuestros inputs
+    const [form, setForm] = useState({
+        name: '',
+        email: '',
+        password: ''
+    });
 
-export default Register;
+    // Funcion que manejara los cambios cada vez que escribimos en los inputs
+    const handleInput = event => {
+        // Llamado para guardar la informacion
+        setForm({
+            ...form,
+            [event.target.name]: event.target.value
+        })
+    }
+
+    const handleSubmit = event => {
+        event.preventDefault();
+        props.registerRequest(form);
+        props.history.push('/');        
+    }
+
+    return (
+        <section className="register">
+            <section className="register__container">
+            <h2>Regístrate</h2>
+            <form className="register__container--form" onSubmit={handleSubmit}>
+                <input
+                    name="name" 
+                    className="input" 
+                    type="text" 
+                    placeholder="Nombre"
+                    onChange={handleInput}
+                />
+                <input
+                    name="email" 
+                    className="input" 
+                    type="text" 
+                    placeholder="Correo"
+                    onChange={handleInput}
+                />
+                <input
+                    name="password" 
+                    className="input" 
+                    type="password" 
+                    placeholder="Contraseña"
+                    onChange={handleInput}
+                />
+                <button className="button">Registrarme</button>
+            </form>
+            <Link to="/login">
+                Iniciar sesión
+            </Link>
+            </section>
+        </section>
+    );
+}
+
+const mapDispatchToProps = {
+    registerRequest
+}
+
+export default connect(null, mapDispatchToProps)(Register);
