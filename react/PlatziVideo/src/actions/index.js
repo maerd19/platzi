@@ -27,3 +27,9 @@ export const registerRequest = payload => ({
     type: 'REGISTER_REQUEST',
     payload
 });
+
+// action para obtener el source del video
+export const getVideoSource = payload => ({
+    type: 'GET_VIDEO_SOURCE',
+    payload
+});

@@ -32,6 +32,14 @@ const reducer = (state, action) => {
                 ...state,
                 user: action.payload
             }
+        case 'GET_VIDEO_SOURCE':
+            return {
+                ...state,
+                // 2.- Por medio del id buscamos en los arreglos la informacion que coincida con el payload enviado.
+                playing: state.trends.find(item => item.id === Number(action.payload)) 
+                || state.original.find(item => item.id === Number(action.payload))
+                || []
+            }
         default: 
             // Si type no coincide con ninguno de los casos regresara nuestro estado principal
             return state;

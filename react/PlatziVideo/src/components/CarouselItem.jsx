@@ -3,6 +3,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 // 1.- Importamos de actions los metodos del action que se comunicaran con el reducer
+import { Link } from 'react-router-dom';
 import { setFavorite, deleteFavorite } from '../actions';
 import '../assets/styles/components/CarouselItem.scss';
 import playIcon from '../assets/static/play-icon.png';
@@ -27,8 +28,16 @@ const CarouselItem = props => {
     <div className="carousel-item">
         <img className="carousel-item__img" src={cover} alt={title} />
         <div className="carousel-item__details">
-            <div>             
-                <img className="carousel-item__details--img" src={playIcon} alt="Play Icon" />
+            <div>
+                {/* El id se obtiene del render que se hace por cada uno de los elementos que se presenta en el carousel */}
+                <Link to={`/player/${id}`}>
+                    <img 
+                        className="carousel-item__details--img" 
+                        src={playIcon} 
+                        alt="Play Icon" 
+                    />
+                </Link>
+                
 
                 {isList ?
                     <img 
