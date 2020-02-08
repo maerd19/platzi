@@ -37,7 +37,7 @@ const reducer = (state, action) => {
                 ...state,
                 // 2.- Por medio del id buscamos en los arreglos la informacion que coincida con el payload enviado.
                 playing: state.trends.find(item => item.id === Number(action.payload)) 
-                || state.original.find(item => item.id === Number(action.payload))
+                || state.originals.find(item => item.id === Number(action.payload))
                 || []
             }
         default: 

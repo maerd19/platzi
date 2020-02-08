@@ -1,7 +1,6 @@
 import React, { useEffect } from 'react';
 import { connect } from 'react-redux';
 import { getVideoSource } from '../actions';
-// import { Redirect } from 'react-router-dom';
 import '../assets/styles/components/Player.scss';
 import NotFound from '../containers/NotFound'
 
@@ -11,7 +10,7 @@ const Player = props => {
     const { id } = props.match.params;
 
     // Validacion para comprobar si un video se esta ejecutando
-    const hasPlaying = Object.keys(props.playing). length > 0;
+    const hasPlaying = Object.keys(props.playing).length > 0;
 
     // Esta funcion se encargara de buscar el video a reproducirse
     useEffect(() => {
@@ -19,7 +18,9 @@ const Player = props => {
         props.getVideoSource(id);
     }, []);
 
-    return hasPlaying ? (
+    if (!props.playing) return <h3>Cargando...</h3>;
+    if (!Object.keys(props.playing).length) return <NotFound />
+    return (
         <div className="Player">
             <video controls autoPlay>
                 <source src={props.playing.source} type="video/mp4" />
@@ -28,14 +29,7 @@ const Player = props => {
                 <button>Regresar</button>
             </div>
         </div>
-    ) 
-    :
-    // Si no encontramos el objeto que se esta reproduciendo se ejecuta el redirect
-    // Si un video con el link correcto nos envia a esta seccion se debe a que el elemento tardo en llegar porque mas atras en la pila 
-    // Esto significa que no estamos manejando la sincronia de nuestro proyecto
-    // Una solucion rapida seria usar NorFound en lugar de Redirect
-    // <Redirect to="/404/" />;
-    <NotFound />
+    );
 };
 
 const mapStateToProps = state => {

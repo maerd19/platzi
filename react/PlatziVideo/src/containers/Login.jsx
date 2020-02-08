@@ -65,6 +65,7 @@ const Login = props => {
                 <div><img src={twitterIcon} /> Inicia sesión con Twitter</div>
             </section>
             <p className="login__container--register">
+                {/* Manejo de espacios en blanco en JSX */}
                 No tienes ninguna cuenta {' '}
                 <Link to="/register">Regístrate</Link>
             </p>
