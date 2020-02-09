@@ -3,7 +3,7 @@ const ExtractTextPlugin = require('extract-text-webpack-plugin');
 const CleanWebpackPlugin = require('clean-webpack-plugin');
 
 
-module.exports = (env) => {
+module.exports = env => {
   const plugins = [
     new ExtractTextPlugin("css/[name].[hash].css")
   ]
@@ -17,8 +17,8 @@ module.exports = (env) => {
   return {
 
     entry: {
-      "home": path.resolve(__dirname, 'src/entries/home.js'),
-      "redux": path.resolve(__dirname, 'src/entries/redux.js'),
+      "app": path.resolve(__dirname, 'src/entries/app.js'),
+      // "redux": path.resolve(__dirname, 'src/entries/redux.js'),
     },
     output: {
       path: path.resolve(__dirname, 'dist'),

@@ -1,16 +1,24 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 import './modal.css';
 
-function Modal(props) {
-  return (
-    <div className="Modal">
-      {props.children}
+const Modal = ({ children, handleClick }) => (
+  <div className="Modal">
+    {children}
+    <Link
+      to={{
+        pathname: '/videos',
+        state: {
+          modal: false
+        }
+      }}
+    >
       <button
-        onClick={props.handleClick}
+        onClick={handleClick}
         className="Modal-close"
       />
-    </div>
-  )
-}
+    </Link>      
+  </div>
+)
 
 export default Modal;
