@@ -17,8 +17,7 @@ module.exports = env => {
   return {
 
     entry: {
-      "app": path.resolve(__dirname, 'src/entries/app.js'),
-      // "redux": path.resolve(__dirname, 'src/entries/redux.js'),
+      "app": path.resolve(__dirname, 'src/pages/containers/app.js'),
     },
     output: {
       path: path.resolve(__dirname, 'dist'),
