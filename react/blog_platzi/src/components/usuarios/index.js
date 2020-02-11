@@ -20,18 +20,20 @@ class Usuarios extends Component {
   )
   render() {
     return (
-     <div>
-       <div className="tabla">
-         <thead>
-           <tr>
-             <th>Nombre</th>
-             <th>Correo</th>
-             <th>Enlace</th>
-           </tr>
-           { this.ponerFilas() }
-         </thead>
-       </div>
-     </div>
+      <div className="tabla">
+        <table>
+          <thead>
+            <tr>
+              <th>Nombre</th>
+              <th>Correo</th>
+              <th>Enlace</th>
+            </tr>          
+          </thead>
+          <tbody>
+            { this.ponerFilas() }
+          </tbody>
+        </table>        
+      </div>
     )
   }
 }
