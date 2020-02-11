@@ -12,10 +12,9 @@ export const traerTodos = () => async dispatch => {
             payload: respuesta.data
         })
     } catch (error) {
-       console.log('Error: ', error.message);  
        dispatch({
            type: ERROR,
-           payload: error.message
+           payload: 'Algo salio mal, intente mas tarde.'
        })      
     }
 }
