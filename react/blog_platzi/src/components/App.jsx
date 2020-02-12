@@ -13,6 +13,7 @@ const App = () => {
         <div className="margen">
           <Route exact path='/' component={Usuarios} />
           <Route exact path='/tareas' component={Tareas} />
+          {/* Parametro por URL */}
           <Route exact path='/publicaciones/:key' component={Publicaciones} />
         </div>        
     </BrowserRouter>

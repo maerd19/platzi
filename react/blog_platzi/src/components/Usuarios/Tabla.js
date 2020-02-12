@@ -10,7 +10,9 @@ const Tabla = props => {
               <td>{user.email}</td>
               <td>{user.website}</td>
               <td>
+                  {/* Para no recargar la pagina es necesario usar Link/to en lugar de a/href */}
                   <Link to={ `/publicaciones/${key}` }>
+                        {/* Numero de la casilla en el arreglo en donde esta el usuario */}
                         <div className="eye-solid icon"></div>
                   </Link>
               </td>

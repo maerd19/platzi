@@ -8,8 +8,10 @@ import * as usuariosActions from '../../actions/usuariosActions';
 
 class Usuarios extends Component {
 
-  componentDidMount() {    
-    this.props.traerTodos();
+  componentDidMount() {
+    if (!this.props.usuarios.length) {
+      this.props.traerTodos();
+    }
   }
 
   ponerContenido = () => {
@@ -26,6 +28,8 @@ class Usuarios extends Component {
   }
 
   render() {
+    console.log(this.props);
+    
     return (
       <div>
         <h1>Usuarios</h1>
