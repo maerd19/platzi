@@ -1,7 +1,7 @@
 import React from 'react';
 import { BrowserRouter, Route } from 'react-router-dom';
 import Menu from './Menu';
-import Usuarios from './usuarios' ;
+import Usuarios from './Usuarios' ;
 import Publicaciones from './Publicaciones' ;
 
 const Tareas = () => <div>Tareas</div>

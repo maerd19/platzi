@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import Spinner from '../general/Spinner';
-import Fatal from '../general/Fatal';
+import Spinner from '../General/Spinner';
+import Fatal from '../General/Fatal';
 import Tabla from './Tabla';
 
 import * as usuariosActions from '../../actions/usuariosActions';
