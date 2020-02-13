@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import Spinner from '../General/Spinner';
 import Fatal from '../General/Fatal';
+import Comentarios from './Comentarios';
 
 // Usuarios y publicaciones conviven en el mismo componente
 import * as usuariosActions from '../../actions/usuariosActions';
@@ -11,7 +12,10 @@ import * as publicacionesActions from '../../actions/publicacionesActions';
 // no mezclar las actions en caso de que tengan el mismo nombre.
 const { traerTodos: usuariosTraerTodos } = usuariosActions;
 const { 
-    traerPorUsuario: publicacionesTraerPorUsuario, abrirCerrar } = publicacionesActions;
+    traerPorUsuario: publicacionesTraerPorUsuario, 
+    abrirCerrar, 
+    traerComentarios 
+} = publicacionesActions;
 
 export class Publicaciones extends Component {
     // Para asegurarnos de que las funciones dentro del componentDidMountse manden a llamar
@@ -73,6 +77,7 @@ export class Publicaciones extends Component {
             match: { params: { key } }
         } = this.props;
 
+        // Validaciones antes de mostrar publicaciones
         if (!usuarios.length) return;
         if (usuariosReducer.error) return;
         if (publicacionesReducer.cargando) return <Spinner />;
@@ -82,27 +87,40 @@ export class Publicaciones extends Component {
 
         const { publicaciones_key } = usuarios[key];
 
+        console.log('publicaciones[publicaciones_key]', publicaciones[publicaciones_key]);
+        
+        // Sen envian por parametros publicaciones y publicaciones_key a mostrarInfo
         return this.mostrarInfo(
             publicaciones[publicaciones_key],
             publicaciones_key
         );
     };
 
-    mostrarInfo = (publicaciones, pub_key) => (
-        publicaciones.map((publicacion, com_key) => (
-            <div 
-                className="pub_titulo"
-                key={ publicacion.id }
-                onClick={ ()=>this.props.abrirCerrar(pub_key, com_key) }
-            >
-                <h2> { publicacion.title } </h2>
-                <h3> { publicacion.body } </h3>
-                {
-                    (publicacion.abierto) ? 'abierto' : 'cerrado'
-                }
-            </div>
-        ))
-    );
+    mostrarInfo = (publicaciones, pub_key) => {
+        return ( publicaciones.map((publicacion, com_key) => (
+                <div 
+                    className="pub_titulo"
+                    key={ publicacion.id }
+                    onClick={ 
+                        ()=>this.mostrarComentarios(pub_key, com_key, publicacion.comentarios) 
+                    }
+                >
+                    <h2> { publicacion.title } </h2>
+                    <h3> { publicacion.body } </h3>
+                    {
+                        (publicacion.abierto) ? <Comentarios /> : 'cerrado'
+                    }
+                </div>
+            ))
+        );
+    }
+
+    mostrarComentarios = (pub_key, com_key, comentarios) => {        
+        this.props.abrirCerrar(pub_key, com_key);
+        if (!comentarios.length) {
+            this.props.traerComentarios(pub_key, com_key)
+        }
+    }
 
     render() {
         console.log(this.props);
@@ -128,7 +146,8 @@ const mapStateToProps = ({ usuariosReducer, publicacionesReducer }) => {
 const mapDispatchToProps = {
     usuariosTraerTodos,
     publicacionesTraerPorUsuario,
-    abrirCerrar
+    abrirCerrar,
+    traerComentarios
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(Publicaciones);

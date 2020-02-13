@@ -24,7 +24,8 @@ export const traerPorUsuario = key => async (dispatch, getState) => {
         // La informacion necesaria sera indicar si debe estar abierto o cerrado la casilla de comentarios y el
         // contenido de los comentarios.
         const nuevas = respuesta.data.map(publicacion => ({
-            // Esta funcion regresa un objeto como respuesta que contiene: todo lo que trae la publicacion, comentarios y abierto por default en falso
+            // Esta funcion regresa un objeto como respuesta que contiene: 
+            // todo lo que trae la publicacion, comentarios y abierto por default en falso
             ...publicacion,
             comentarios: [],
             abierto: false
@@ -35,7 +36,7 @@ export const traerPorUsuario = key => async (dispatch, getState) => {
         const publicaciones_actualizadas = [
             // contenido de publicaciones
             ...publicaciones,
-            // Enviamos las nuevas publicaciones
+            // Enviamos las nuevas publicaciones en lugar de respuesta.data
             nuevas
         ];
 
@@ -67,26 +68,68 @@ export const traerPorUsuario = key => async (dispatch, getState) => {
             type: ERROR,
             payload: 'Publicaciones no disponibles.'
         })
-    }  
+    }
 }
 
+// Esta action traera el estado actual y modificara el valor de true o false a lo contrario
 export const abrirCerrar = (pub_key, com_key) => (dispatch, getState) => {
+    // 1.- Seleccion de publicaciones desde el reducer
     const { publicaciones } = getState().publicacionesReducer;
+    // 2.- Del arreglo de publicaciones se toma la que coincida con los parametros recibidos en la funcion (pub_key, com_key)
     const seleccionada = publicaciones[pub_key][com_key];
-
+    
+    // 3.- Se cambia el valor la propiedad que indicara si debe estar abierto o cerrado
     const actualizada = {
         ...seleccionada,
         abierto: !seleccionada.abierto
     };
-
+    
+    // 4.- Todo el contenido de las publicaciones regresa con el cambio de estado en la publicacion seleccionada
     const publicaciones_actualizadas = [...publicaciones];
+
     publicaciones_actualizadas[pub_key] = [
         ...publicaciones[pub_key]
     ];
+
+    // 5.- Seleccionamos la publicacion especifica que sufrio un cambio
     publicaciones_actualizadas[pub_key][com_key] = actualizada;
 
+    // 6.- Por medio del dispatch se envia la informacion al reducer para que cambie el valor del estado
     dispatch({
         type: ACTUALIZAR,
         payload: publicaciones_actualizadas
     });
+}
+
+export const traerComentarios = (pub_key, com_key) => async (dispatch, getState) => {
+    const { publicaciones } = getState().publicacionesReducer;
+    const seleccionada = publicaciones[pub_key][com_key];
+
+    try {
+        const respuesta = await axios.get(`https://jsonplaceholder.typicode.com/comments?postId=${seleccionada.id}`);
+        
+        const actualizada = {
+            ...seleccionada,
+            comentarios: respuesta.data
+        };
+
+        const publicaciones_actualizadas = [...publicaciones];
+        
+        publicaciones_actualizadas[pub_key] = [
+            ...publicaciones[pub_key]
+        ];
+
+        publicaciones_actualizadas[pub_key][com_key] = actualizada;
+
+        dispatch({
+            type: ACTUALIZAR,
+            payload: publicaciones_actualizadas
+        });        
+    } catch (error) {
+        console.log(error.message);
+        dispatch({
+            type: ERROR,
+            payload: 'Publicaciones no disponibles.'
+        })
+    }
 }
