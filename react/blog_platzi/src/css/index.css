@@ -35,3 +35,7 @@
   .rojo {
     color: red;
   }
+
+  .pub_titulo {
+    border-top: 1px solid black;
+  }

@@ -10,15 +10,18 @@ import * as publicacionesActions from '../../actions/publicacionesActions';
 // Cuando se llaman a multiples reducers en una action se deben usar alias para 
 // no mezclar las actions en caso de que tengan el mismo nombre.
 const { traerTodos: usuariosTraerTodos } = usuariosActions;
-const { traerPorUsuario: publicacionesTraerPorUsuario } = publicacionesActions;
+const { 
+    traerPorUsuario: publicacionesTraerPorUsuario, abrirCerrar } = publicacionesActions;
 
 export class Publicaciones extends Component {
     // Para asegurarnos de que las funciones dentro del componentDidMountse manden a llamar
     // escalonadamente se le coloca un async/await
     async componentDidMount() {
-        // No se recomienda destructurar las reducers porque como el reducer es el estado recuerda que el estado
-        // se actualiza y el componentDidMount se ejecuta despues del render, entonces ese estado puede variar
-        // NO lo puedo destructurar.
+        // No se recomienda destructurar los reducers en el componentDidMount porque
+        // this.props.usuariosReducer apunta directamente al reducer y al desctructurarse
+        // crea una variable en memoria la cual nunca cambiaria su valor dejando el
+        // usuariosTraerTodos() sin ejecutarse ya que la variable generada por la 
+        // destructuracion no detectaria el cambio del estado        
         const {
             usuariosTraerTodos,
             publicacionesTraerPorUsuario,
@@ -59,14 +62,55 @@ export class Publicaciones extends Component {
         return <h1>Publicaciones de { nombre }</h1>
     }
 
+    ponerPublicaciones = () => {
+        // Aqui si se puede destructurar el reducer porque es una funcion que se ejecuta en el 
+        // render y no tienen ningun cambio de estado
+        const {
+            usuariosReducer,
+            usuariosReducer: { usuarios },
+            publicacionesReducer,
+            publicacionesReducer: { publicaciones },
+            match: { params: { key } }
+        } = this.props;
+
+        if (!usuarios.length) return;
+        if (usuariosReducer.error) return;
+        if (publicacionesReducer.cargando) return <Spinner />;
+        if (publicacionesReducer.error) return <Fatal mensaje={publicacionesReducer.error} />;
+        if (!publicaciones.length) return;
+        if (!('publicaciones_key' in usuarios[key])) return;
+
+        const { publicaciones_key } = usuarios[key];
+
+        return this.mostrarInfo(
+            publicaciones[publicaciones_key],
+            publicaciones_key
+        );
+    };
+
+    mostrarInfo = (publicaciones, pub_key) => (
+        publicaciones.map((publicacion, com_key) => (
+            <div 
+                className="pub_titulo"
+                key={ publicacion.id }
+                onClick={ ()=>this.props.abrirCerrar(pub_key, com_key) }
+            >
+                <h2> { publicacion.title } </h2>
+                <h3> { publicacion.body } </h3>
+                {
+                    (publicacion.abierto) ? 'abierto' : 'cerrado'
+                }
+            </div>
+        ))
+    );
+
     render() {
         console.log(this.props);
         
         return (
-            <div>
-                {/*Obtenemos valor por parametro */}
-                { this.props.match.params.key }
+            <div>                
                 { this.ponerUsuario() }
+                { this.ponerPublicaciones() }
             </div>
         )
     }
@@ -83,7 +127,8 @@ const mapStateToProps = ({ usuariosReducer, publicacionesReducer }) => {
 // Entregamos los nuevos metodos destructurados y renombrados
 const mapDispatchToProps = {
     usuariosTraerTodos,
-    publicacionesTraerPorUsuario
+    publicacionesTraerPorUsuario,
+    abrirCerrar
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(Publicaciones);

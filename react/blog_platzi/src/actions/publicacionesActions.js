@@ -1,10 +1,14 @@
 import axios from 'axios';
-import { TRAER_POR_USUARIO } from '../types/publicacionesTypes';
+import { ACTUALIZAR, CARGANDO, ERROR } from '../types/publicacionesTypes';
 import * as usuarioTypes from '../types/usuariosTypes';
 
 const { TRAER_TODOS: USUARIOS_TRAER_TODOS } = usuarioTypes;
 
 export const traerPorUsuario = key => async (dispatch, getState) => {
+    dispatch({
+        type: CARGANDO
+    })
+
     // La informacion del usuario y las publicaciones se obtienen del estado actual al cual
     // podemos acceder mediante el uso de getState
 
@@ -13,37 +17,76 @@ export const traerPorUsuario = key => async (dispatch, getState) => {
     const { publicaciones } = getState().publicacionesReducer;
     const usuario_id = usuarios[key].id;
 
-    const respuesta = await axios.get(`https://jsonplaceholder.typicode.com/posts?userId=${usuario_id}`);
-    
-    // En lugar de sobreescribir el estado de las publicaciones cada vez que accedemos
-    // a un usuario, se deben almacenar todas en un arreglo para evitar segundas busquedas.
-    const publicaciones_actualizadas = [
-        // contenido de publicaciones
-        ...publicaciones,
-        // Se agregan las nuevas publicaciones
-        respuesta.data
+    try {
+        const respuesta = await axios.get(`https://jsonplaceholder.typicode.com/posts?userId=${usuario_id}`);
+        
+        // Necesitamos cambiar la respuesta ya que vamos a necesitar mas informacion dentro de las publicaciones
+        // La informacion necesaria sera indicar si debe estar abierto o cerrado la casilla de comentarios y el
+        // contenido de los comentarios.
+        const nuevas = respuesta.data.map(publicacion => ({
+            // Esta funcion regresa un objeto como respuesta que contiene: todo lo que trae la publicacion, comentarios y abierto por default en falso
+            ...publicacion,
+            comentarios: [],
+            abierto: false
+        }))
+
+        // En lugar de sobreescribir el estado de las publicaciones cada vez que accedemos
+        // a un usuario, se deben almacenar todas en un arreglo para evitar segundas busquedas.
+        const publicaciones_actualizadas = [
+            // contenido de publicaciones
+            ...publicaciones,
+            // Enviamos las nuevas publicaciones
+            nuevas
+        ];
+
+        dispatch({
+            type: ACTUALIZAR,
+            payload: publicaciones_actualizadas
+        });
+
+        // Ya que esta hecho el arreglo de arreglos es necesario decirle al usuario reducer 
+        // cual es el lugar en el arreglo en el que estan almacenadas las publicaciones
+
+        // Accedemos al ultimo valor del arreglo
+        const publicaciones_key = publicaciones_actualizadas.length - 1;
+        const usuarios_actualizados = [...usuarios];
+        // Se agrega un nuevo atributo a un usuario especifico (key)
+        usuarios_actualizados[key] = {
+            ...usuarios[key],        
+            publicaciones_key // === publicaciones_key : publicaciones_key 
+        }
+
+        // Nuevo dispatch para tambien mandar los usuarios actualizados
+        dispatch({
+            type: USUARIOS_TRAER_TODOS,
+            payload: usuarios_actualizados
+        });
+    } catch (error) {
+        console.log(error.message);
+        dispatch({
+            type: ERROR,
+            payload: 'Publicaciones no disponibles.'
+        })
+    }  
+}
+
+export const abrirCerrar = (pub_key, com_key) => (dispatch, getState) => {
+    const { publicaciones } = getState().publicacionesReducer;
+    const seleccionada = publicaciones[pub_key][com_key];
+
+    const actualizada = {
+        ...seleccionada,
+        abierto: !seleccionada.abierto
+    };
+
+    const publicaciones_actualizadas = [...publicaciones];
+    publicaciones_actualizadas[pub_key] = [
+        ...publicaciones[pub_key]
     ];
-
-    // Ya que esta hecho el arreglo de arreglos es necesario decirle al usuario reducer 
-    // cual es el lugar en el arreglo en el que estan almacenadas las publicaciones
-
-    // Accedemos al ultimo valor del arreglo
-    const publicaciones_key = publicaciones_actualizadas.length - 1;
-    const usuarios_actualizados = [...usuarios];
-    // Se agrega un nuevo atributo a un usuario especifico (key)
-    usuarios_actualizados[key] = {
-        ...usuarios[key],        
-        publicaciones_key // === publicaciones_key : publicaciones_key 
-    }
-
-    // Nuevo dispatch para tambien mandar los usuarios actualizados
-    dispatch({
-        type: USUARIOS_TRAER_TODOS,
-        payload: usuarios_actualizados
-    });
+    publicaciones_actualizadas[pub_key][com_key] = actualizada;
 
     dispatch({
-        type: TRAER_POR_USUARIO,
+        type: ACTUALIZAR,
         payload: publicaciones_actualizadas
     });
 }
