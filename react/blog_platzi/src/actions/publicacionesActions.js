@@ -1,5 +1,12 @@
 import axios from 'axios';
-import { ACTUALIZAR, CARGANDO, ERROR } from '../types/publicacionesTypes';
+import {
+	CARGANDO,
+	ERROR,
+	ACTUALIZAR,
+	COM_CARGANDO,
+    COM_ERROR,
+    COM_ACTUALIZAR
+} from '../types/publicacionesTypes';
 import * as usuarioTypes from '../types/usuariosTypes';
 
 const { TRAER_TODOS: USUARIOS_TRAER_TODOS } = usuarioTypes;
@@ -7,13 +14,13 @@ const { TRAER_TODOS: USUARIOS_TRAER_TODOS } = usuarioTypes;
 export const traerPorUsuario = key => async (dispatch, getState) => {
     dispatch({
         type: CARGANDO
-    })
+    });
 
     // La informacion del usuario y las publicaciones se obtienen del estado actual al cual
     // podemos acceder mediante el uso de getState
 
     // Se destructuran los usuarios y publicaciones del reducer
-    const { usuarios } = getState().usuariosReducer;
+    let { usuarios } = getState().usuariosReducer;
     const { publicaciones } = getState().publicacionesReducer;
     const usuario_id = usuarios[key].id;
 
@@ -29,7 +36,7 @@ export const traerPorUsuario = key => async (dispatch, getState) => {
             ...publicacion,
             comentarios: [],
             abierto: false
-        }))
+        }));
 
         // En lugar de sobreescribir el estado de las publicaciones cada vez que accedemos
         // a un usuario, se deben almacenar todas en un arreglo para evitar segundas busquedas.
@@ -55,21 +62,22 @@ export const traerPorUsuario = key => async (dispatch, getState) => {
         usuarios_actualizados[key] = {
             ...usuarios[key],        
             publicaciones_key // === publicaciones_key : publicaciones_key 
-        }
+        };
 
         // Nuevo dispatch para tambien mandar los usuarios actualizados
         dispatch({
             type: USUARIOS_TRAER_TODOS,
             payload: usuarios_actualizados
         });
-    } catch (error) {
+    } 
+    catch (error) {
         console.log(error.message);
         dispatch({
             type: ERROR,
             payload: 'Publicaciones no disponibles.'
-        })
+        });
     }
-}
+};
 
 // Esta action traera el estado actual y modificara el valor de true o false a lo contrario
 export const abrirCerrar = (pub_key, com_key) => (dispatch, getState) => {
@@ -102,11 +110,15 @@ export const abrirCerrar = (pub_key, com_key) => (dispatch, getState) => {
 }
 
 export const traerComentarios = (pub_key, com_key) => async (dispatch, getState) => {
-    const { publicaciones } = getState().publicacionesReducer;
-    const seleccionada = publicaciones[pub_key][com_key];
+	dispatch({
+		type: COM_CARGANDO
+	});
+
+	const { publicaciones } = getState().publicacionesReducer;
+	const seleccionada = publicaciones[pub_key][com_key];
 
     try {
-        const respuesta = await axios.get(`https://jsonplaceholder.typicode.com/comments?postId=${seleccionada.id}`);
+        const respuesta = await axios.get(`https://jsonplaceholder.typicode.com/comments?postId=${seleccionada.id}`)
         
         const actualizada = {
             ...seleccionada,
@@ -122,14 +134,14 @@ export const traerComentarios = (pub_key, com_key) => async (dispatch, getState)
         publicaciones_actualizadas[pub_key][com_key] = actualizada;
 
         dispatch({
-            type: ACTUALIZAR,
+            type: COM_ACTUALIZAR,
             payload: publicaciones_actualizadas
         });        
     } catch (error) {
         console.log(error.message);
         dispatch({
-            type: ERROR,
-            payload: 'Publicaciones no disponibles.'
-        })
+            type: COM_ERROR,
+            payload: 'Comentarios no disponibles.'
+        });
     }
-}
+};

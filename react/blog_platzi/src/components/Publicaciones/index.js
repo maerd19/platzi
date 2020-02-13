@@ -17,7 +17,7 @@ const {
     traerComentarios 
 } = publicacionesActions;
 
-export class Publicaciones extends Component {
+class Publicaciones extends Component {
     // Para asegurarnos de que las funciones dentro del componentDidMountse manden a llamar
     // escalonadamente se le coloca un async/await
     async componentDidMount() {
@@ -43,7 +43,7 @@ export class Publicaciones extends Component {
         // Validamos que el usuario no tenga 'publicaciones_key' dentro de sus atributos
         if(!('publicaciones_key' in this.props.usuariosReducer.usuarios[key])) {
             // Traemos las publicaciones que le corresponden al usuario
-            publicacionesTraerPorUsuario(key);
+            await publicacionesTraerPorUsuario(key);
         }        
     }
 
@@ -54,7 +54,7 @@ export class Publicaciones extends Component {
         } = this.props;
 
         if(usuariosReducer.error) {
-            return <Fatal mensaje={ usuariosReducer.error }/>
+            return <Fatal mensaje={ usuariosReducer.error }/>;
         }
         
         if(!usuariosReducer.usuarios.length || usuariosReducer.cargando) {
@@ -64,7 +64,7 @@ export class Publicaciones extends Component {
         const nombre = usuariosReducer.usuarios[key].name;
 
         return <h1>Publicaciones de { nombre }</h1>
-    }
+    };
 
     ponerPublicaciones = () => {
         // Aqui si se puede destructurar el reducer porque es una funcion que se ejecuta en el 
@@ -89,7 +89,7 @@ export class Publicaciones extends Component {
 
         console.log('publicaciones[publicaciones_key]', publicaciones[publicaciones_key]);
         
-        // Sen envian por parametros publicaciones y publicaciones_key a mostrarInfo
+        // Se envian por parametros publicaciones y publicaciones_key a mostrarInfo
         return this.mostrarInfo(
             publicaciones[publicaciones_key],
             publicaciones_key
@@ -108,7 +108,11 @@ export class Publicaciones extends Component {
                     <h2> { publicacion.title } </h2>
                     <h3> { publicacion.body } </h3>
                     {
-                        (publicacion.abierto) ? <Comentarios /> : 'cerrado'
+                        (publicacion.abierto) ? 
+				<Comentarios 
+					comentarios={publicacion.comentarios}
+				/> 
+				: ''
                     }
                 </div>
             ))
@@ -116,7 +120,7 @@ export class Publicaciones extends Component {
     }
 
     mostrarComentarios = (pub_key, com_key, comentarios) => {        
-        this.props.abrirCerrar(pub_key, com_key);
+        this.props.abrirCerrar(pub_key, com_key)
         if (!comentarios.length) {
             this.props.traerComentarios(pub_key, com_key)
         }
@@ -130,17 +134,14 @@ export class Publicaciones extends Component {
                 { this.ponerUsuario() }
                 { this.ponerPublicaciones() }
             </div>
-        )
+        );
     }
 }
 
 // Recibo los reducers
 const mapStateToProps = ({ usuariosReducer, publicacionesReducer }) => {
-    return {
-        usuariosReducer,
-        publicacionesReducer
-    }
-}
+	return { usuariosReducer, publicacionesReducer };
+};
 
 // Entregamos los nuevos metodos destructurados y renombrados
 const mapDispatchToProps = {
@@ -148,6 +149,6 @@ const mapDispatchToProps = {
     publicacionesTraerPorUsuario,
     abrirCerrar,
     traerComentarios
-}
+};
 
 export default connect(mapStateToProps, mapDispatchToProps)(Publicaciones);
