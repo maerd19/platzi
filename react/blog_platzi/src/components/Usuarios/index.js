@@ -8,6 +8,7 @@ import * as usuariosActions from '../../actions/usuariosActions';
 
 class Usuarios extends Component {
 
+  // Para evitar que la pagina se recargue se hace la siguiente validacion
   componentDidMount() {
     if (!this.props.usuarios.length) {
       this.props.traerTodos();
