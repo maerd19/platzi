@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
+import { Link } from 'react-router-dom';
 import Spinner from '../General/Spinner';
 import Fatal from '../General/Fatal';
 
@@ -7,7 +8,9 @@ import * as tareasActions from '../../actions/tareasActions';
 
 export class Tareas extends Component {
     componentDidMount() {
-        this.props.traerTodas()
+        if (!Object.keys(this.props.tareas).length) {
+            this.props.traerTodas();
+        }
     }
 
     mostrarContenido = () => {
@@ -47,6 +50,12 @@ export class Tareas extends Component {
                 {
                     por_usuario[tar_id].title
                 }
+                <button className='m_left'>
+                    <Link to={`/tareas/guardar/${usu_id}/${tar_id}`}>
+                        Editar
+                    </Link>
+                </button>
+                <button className='m_left'>Eliminar</button>
             </div>
         ))
     }
@@ -54,6 +63,11 @@ export class Tareas extends Component {
     render() {
         return (
             <div>
+                <button>
+                    <Link to='/tareas/guardar'>
+                        Agregar
+                    </Link>
+                </button>
                 { this.mostrarContenido() }
             </div>
         );
