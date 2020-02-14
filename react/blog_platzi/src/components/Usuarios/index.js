@@ -16,7 +16,6 @@ class Usuarios extends Component {
   }
 
   ponerContenido = () => {
-    console.log(this.props);
     
     if (this.props.cargando) {
       return <Spinner />;
@@ -25,11 +24,10 @@ class Usuarios extends Component {
       return <Fatal mensaje={ this.props.error }/>;
     }
 
-    return <Tabla />;    
-  }
+    return <Tabla />
+  };
 
   render() {
-    console.log(this.props);
     
     return (
       <div>
@@ -38,7 +36,7 @@ class Usuarios extends Component {
       </div>
     )
   }
-}
+};
 
 const mapStateToProps = (reducers) => {
   return reducers.usuariosReducer;

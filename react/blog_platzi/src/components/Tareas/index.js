@@ -6,10 +6,23 @@ import Fatal from '../General/Fatal';
 
 import * as tareasActions from '../../actions/tareasActions';
 
-export class Tareas extends Component {
+class Tareas extends Component {
     componentDidMount() {
+        // Con la informacion silicitada a la API ya normalizada se valida que haya tareas recibidas en props.
+        // Podemos apoyarnos de Object.keys para contar el contenido de un objeto
         if (!Object.keys(this.props.tareas).length) {
+            // Si las tareas estan vacias, traelas.
             this.props.traerTodas();
+        }
+    }
+
+    componentDidUpdate() {
+        // Hacemos que el if del componentDidUpdate() del tareas solo se llame cuando sea estrictamente necesario, 
+        // asi solo cuando le de click a un eliminar se llame el traerTodas() del componentDidUpdate() una sola vez.
+        const { tareas, cargando, traerTodas } = this.props;
+
+        if (!Object.keys(this.props.tareas).length && !cargando) {
+            traerTodas();          
         }
     }
 
@@ -29,12 +42,12 @@ export class Tareas extends Component {
                     { this.ponerTareas(usu_id) }
                 </div>
             </div>
-        ))
+        ));
     };
 
     ponerTareas = usu_id => {
         // Se sacan las tareas del props
-        const { tareas } = this.props;
+        const { tareas, cambioCheck, eliminar } = this.props;
         // Se iteran las tareas correspondientes al id del usuario
         const por_usuario = {
             ...tareas[usu_id]
@@ -46,21 +59,23 @@ export class Tareas extends Component {
                 <input 
                     type="checkbox"
                     defaultChecked={por_usuario[tar_id].completed}
+                    onChange={ () => cambioCheck(usu_id, tar_id) }
                 />
-                {
-                    por_usuario[tar_id].title
-                }
+                {  por_usuario[tar_id].title }
                 <button className='m_left'>
+                    {/* Este Link debe generar una nueva ruta en el BrowserRouter */}
                     <Link to={`/tareas/guardar/${usu_id}/${tar_id}`}>
                         Editar
                     </Link>
                 </button>
-                <button className='m_left'>Eliminar</button>
+                <button className='m_left' onClick={ () => eliminar(tar_id) }>
+                    Eliminar
+                </button>
             </div>
-        ))
-    }
+        ));
+    };
 
-    render() {
+    render() {     
         return (
             <div>
                 <button>

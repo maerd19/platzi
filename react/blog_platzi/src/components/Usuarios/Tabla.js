@@ -21,7 +21,6 @@ const Tabla = props => {
     );
 
     return (
-        <div>
             <table className="tabla">
                 <thead>
                 <tr>
@@ -34,7 +33,6 @@ const Tabla = props => {
                 { ponerFilas() }
                 </tbody>
             </table> 
-        </div>
     )
 }
 

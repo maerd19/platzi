@@ -125,23 +125,23 @@ export const traerComentarios = (pub_key, com_key) => async (dispatch, getState)
             comentarios: respuesta.data
         };
 
-        const publicaciones_actualizadas = [...publicaciones];
-        
-        publicaciones_actualizadas[pub_key] = [
-            ...publicaciones[pub_key]
-        ];
+		const publicaciones_actualizadas = [...publicaciones];
 
-        publicaciones_actualizadas[pub_key][com_key] = actualizada;
-
-        dispatch({
-            type: COM_ACTUALIZAR,
-            payload: publicaciones_actualizadas
-        });        
-    } catch (error) {
-        console.log(error.message);
-        dispatch({
-            type: COM_ERROR,
-            payload: 'Comentarios no disponibles.'
-        });
-    }
+		publicaciones_actualizadas[pub_key] = [
+			...publicaciones[pub_key]
+		];
+		publicaciones_actualizadas[pub_key][com_key] = actualizada;
+		
+		dispatch({
+			type: COM_ACTUALIZAR,
+			payload: publicaciones_actualizadas
+		});
+	}
+	catch (error) {
+		console.log(error.message);
+		dispatch({
+			type: COM_ERROR,
+			payload: 'Comentarios no disponibles.'
+		});
+	}
 };

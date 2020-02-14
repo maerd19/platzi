@@ -1,36 +1,44 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
+import { Redirect } from 'react-router-dom';
 import Spinner from '../General/Spinner';
 import Fatal from '../General/Fatal';
-import { Redirect } from 'react-router-dom';
 
 import * as tareasActions from '../../actions/tareasActions';
 
 // Componente para dar de alta una tarea nueva y subirla al componente
-export class Guardar extends Component {
+class Guardar extends Component {
     componentDidMount() {
         const {
             match: { params: { usu_id, tar_id } },
             tareas,
             cambioTitulo,
-            cambioUsuarioId
+            cambioUsuarioId,
+            limpiarForma
         } = this.props;
 
+        // Se valida que los id's de usuario y tarea hayan pasado como parametros de la URL
+        // Gracias a esto este componente se puede usar para editar y crear
         if(usu_id && tar_id) {
+            // Del reducer seleccionamos especificamente la tarea de acuerdo a los parametros de la URL
             const tarea = tareas[usu_id][tar_id];
+            // Las siguientes funciones se reciben desde tareasActions y colocaran contenido en el input, dicho contenido vendra del reducer            
             cambioUsuarioId(tarea.userId);
             cambioTitulo(tarea.title);
+        } 
+        else {
+            limpiarForma();
         }
     }
 
     // Manejo de inputs con reducers
     cambioUsuarioId = e => {
         this.props.cambioUsuarioId(e.target.value);        
-    }
+    };
 
     cambioTitulo = e => {
         this.props.cambioTitulo(e.target.value);        
-    }
+    };
 
     guardar = () => {
         const { 
@@ -48,24 +56,27 @@ export class Guardar extends Component {
             completed: false
         };
 
+        // Si se reciben parametros en la url se especificara que se debe editar
         if (usu_id && tar_id) {
             const tarea = tareas[usu_id][tar_id];
             const tarea_editada = {
                 ...nueva_tarea,
                 completed: tarea.completed,
                 id: tarea.id
-            }
+            };
+	    editar(tarea_editada);
         }
+        // Si no se reciben los parametros en la url se creara una nueva tarea
         else {
             agregar(nueva_tarea);
         }
-    }
+    };
 
     deshabilitar = () => {
         const { titulo, usuario_id, cargando } = this.props;
 
         if (cargando) return true;
-        if (!usuario_id || !titulo) return true
+        if (!usuario_id || !titulo) return true;
         return false;
     }
 
@@ -104,7 +115,7 @@ export class Guardar extends Component {
                 </button>
                 { this.mostrarAccion() }
             </div>
-        )
+        );
     }
 }
 

@@ -6,6 +6,6 @@ const Menu = props => (
         <Link to="/">Usuarios</Link>
         <Link to="/tareas">Tareas</Link>
     </nav>
-)
+);
 
 export default Menu;

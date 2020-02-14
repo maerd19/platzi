@@ -117,18 +117,16 @@ class Publicaciones extends Component {
                 </div>
             ))
         );
-    }
+    };
 
     mostrarComentarios = (pub_key, com_key, comentarios) => {        
         this.props.abrirCerrar(pub_key, com_key)
         if (!comentarios.length) {
             this.props.traerComentarios(pub_key, com_key)
         }
-    }
+    };
 
-    render() {
-        console.log(this.props);
-        
+    render() {        
         return (
             <div>                
                 { this.ponerUsuario() }

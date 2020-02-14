@@ -6,8 +6,7 @@ import Publicaciones from './Publicaciones' ;
 import Tareas from './Tareas' ;
 import TareasGuardar from './Tareas/Guardar' ;
 
-const App = () => {
-  return (
+const App = () => (
     <BrowserRouter>
         <Menu />
         <div className="margen">
@@ -19,7 +18,7 @@ const App = () => {
           <Route exact path='/tareas/guardar/:usu_id/:tar_id' component={ TareasGuardar } />
         </div>        
     </BrowserRouter>
-  )
-}
+);
+
 
 export default App;
