@@ -23,6 +23,12 @@
     padding-right: 50px;
     text-decoration: none;
   }
+
+  .contenedor_tareas {
+    font-size: 20px;
+    margin-left: 50px;
+    margin-bottom: 70px;
+  }
   
   body {
     margin: 0;
