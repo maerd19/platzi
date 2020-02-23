@@ -1,19 +1,22 @@
 import React from 'react';
 import axios from 'axios';
 
+import Link from 'next/link';
+
 const index = ({ channels }) => (
     <>
         <header>Podcasts</header>
 
         <div className="channels">
             { channels.map(channel => (
-                <div className="channel">
-                    <img src={channel.urls.banner_image.original} alt={channel.title}/>
-                    <h2>{ channel.title }</h2>
-                </div>
+                <Link href={`/channel?id=${ channel.id }`} prefetch>
+                    <a className="channel">
+                        <img src={channel.urls.banner_image.original} alt={channel.title}/>
+                        <h2>{ channel.title }</h2>
+                    </a>
+                </Link >
             )) }
         </div>        
-
         <style jsx>{`
             header {
                 color: #fff;
@@ -61,8 +64,8 @@ index.getInitialProps = async () => {
     const res = await axios.get('https://api.audioboom.com/channels/recommended');
     const data = await res.data;
     
-    console.log(`Show data fetched. Count: ${data.length}`);
+    console.log(`Show data fetched. Count: ${data.body.length}`);
     return { channels : data.body }
-  }
+}
 
 export default index;
