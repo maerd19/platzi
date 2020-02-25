@@ -1,12 +1,50 @@
-import React from 'react';
-import axios from 'axios';
-import Layout from '../components/Layout';
-import ChannelGrid from '../components/ChannelGrid';
-import PodcastList from '../components/PodcastList';
+import 'isomorphic-fetch'
+import Layout from '../components/Layout'
+import ChannelGrid from '../components/ChannelGrid'
+import PodcastList from '../components/PodcastList'
+import Error from 'next/error'
 
-const channel = ({ channel, audioClips, series }) => (
-    <Layout title={channel.title}>
-        <div className="banner" style={{ backgroundImage: `url(${channel.urls.banner_image.original})` }} />
+export default class extends React.Component {
+
+  static async getInitialProps({ query, res }) {
+    let idChannel = query.id
+
+    try {
+      let [reqChannel, reqSeries, reqAudios] = await Promise.all([
+        fetch(`https://api.audioboom.com/channels/${idChannel}`),
+        fetch(`https://api.audioboom.com/channels/${idChannel}/child_channels`),
+        fetch(`https://api.audioboom.com/channels/${idChannel}/audio_clips`)
+      ])
+
+      if( reqChannel.status >= 400 ) {
+        res.statusCode = reqChannel.status
+        return { channel: null, audioClips: null, series: null, statusCode: reqChannel.status }
+      }
+
+      let dataChannel = await reqChannel.json()
+      let channel = dataChannel.body.channel
+
+      let dataAudios = await reqAudios.json()
+      let audioClips = dataAudios.body.audio_clips
+
+      let dataSeries = await reqSeries.json()
+      let series = dataSeries.body.channels
+
+      return { channel, audioClips, series, statusCode: 200 }
+    } catch(e) {
+      return { channel: null, audioClips: null, series: null, statusCode: 503 }
+    }
+  }
+
+  render() {
+    const { channel, audioClips, series, statusCode } = this.props
+
+    if( statusCode !== 200 ) {
+      return <Error statusCode={ statusCode } />
+    }
+
+    return <Layout title={channel.title}>
+      <div className="banner" style={{ backgroundImage: `url(${channel.urls.banner_image.original})` }} />
       
       <h1>{ channel.title }</h1>
 
@@ -39,29 +77,6 @@ const channel = ({ channel, audioClips, series }) => (
           margin: 0;
         }
       `}</style>
-  </Layout>
-);
-
-channel.getInitialProps = async ({ query }) => {
-    let idChannel = query.id;
-
-    let URL1 = `https://api.audioboom.com/channels/${idChannel}`
-    let URL2 = `https://api.audioboom.com/channels/${idChannel}/audio_clips`
-    let URL3 = `https://api.audioboom.com/channels/${idChannel}/child_channels`
-
-    let [ reqChannel, reqAudios, reqSeries ] = await Promise.all([ axios.get(URL1), axios.get(URL2), axios.get(URL3) ]);
-    
-    const dataChannel = await reqChannel.data;
-    let channel = dataChannel.body.channel;
-
-    const dataAudios = await reqAudios.data;
-    let audioClips = dataAudios.body.audio_clips;
-
-    const dataSeries = await reqSeries.data;
-    let series = dataSeries.body.channels;
-
-    let response = { channel, audioClips, series }
-    return {...response}
+    </Layout>
+  }
 }
-
-export default channel;
