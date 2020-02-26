@@ -3,7 +3,7 @@ import axios from 'axios';
 import Layout from '../components/Layout';
 import ChannelGrid from '../components/ChannelGrid';
 import PodcastList from '../components/PodcastList';
-import Error from 'next/error';
+import Error from './_error';
 
 const channel = ({ channel, audioClips, series, statusCode }) => {
     // early return
@@ -51,15 +51,38 @@ const channel = ({ channel, audioClips, series, statusCode }) => {
 
 channel.getInitialProps = async ({ query, res }) => {
   let idChannel = query.id;
-
   let URL1 = `https://api.audioboom.com/channels/${idChannel}`
   let URL2 = `https://api.audioboom.com/channels/${idChannel}/audio_clips`
   let URL3 = `https://api.audioboom.com/channels/${idChannel}/child_channels`
+  
   try {
-      let [ reqChannel, reqAudios, reqSeries ] = await Promise.all([ axios.get(URL1), axios.get(URL2), axios.get(URL3) ]);
-
-      console.log('reqChannel: ', reqChannel);    
+      // axios.all([ reqChannel, reqAudios, reqSeries ]).then(axios.spread((...responses) => {
+      //   console.log('responses', [...responses])
+      //   // const responseOne = responses[0]
+      //   // const responseTwo = responses[1]
+      //   // const responesThree = responses[2]
+      //   // use/access the results 
+      // })).catch(errors => {
+      //   // react on errors.
+      // })
       
+      let [ reqChannel, reqAudios, reqSeries ] = await Promise.all([ 
+        axios.get(URL1).then(null, e => {
+          console.log(e);          
+          reqChannel.status = e.response.status
+        }),
+        // axios.get(URL1)
+        //   .then(response => console.log(response))
+        //   .catch(e => {
+        //     console.log(e);
+        //     reqChannel.status = e.response.status
+        //   }),
+        axios.get(URL2), 
+        axios.get(URL3) 
+      ]);
+      
+      console.log(reqChannel)
+
       if( reqChannel.status >= 400 ) {
         res.statusCode = reqChannel.status
         return { channel: null, audioClips: null, series: null, statusCode: reqChannel.status }
@@ -76,7 +99,6 @@ channel.getInitialProps = async ({ query, res }) => {
 
       return { channel, audioClips, series, statusCode: 200 }
   } catch (error) {
-      console.log('error: ', error)
       return { channel: null, audioClips: null, series: null, statusCode: 503 }
   }    
 }
