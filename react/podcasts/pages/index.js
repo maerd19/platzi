@@ -2,7 +2,7 @@ import React from 'react';
 import axios from 'axios';
 import Layout from '../components/Layout';
 import ChannelGrid from '../components/ChannelGrid';
-import Error from 'next/error';
+import Error from './_error'
 
 const index = ({ channels, statusCode }) => {
     // early return
@@ -18,11 +18,13 @@ const index = ({ channels, statusCode }) => {
 };
 
 // res maneja la respuesta del server
+// getInitialProps solo funciona con elementos dentro de la carpeta pages.
 index.getInitialProps = async ({ res }) => {
+    // El try catch es la forma de manejar los errores en un flujo async.
     try {
-        const res = await axios.get('https://api.audioboom.com/channels/recommended');
-        const data = await res.data;
-        
+        let req = await axios.get('https://api.audioboom.com/channels/recommended');
+        let data = await req.data;
+        console.log('data', data);
         return { channels : data.body, statusCode: 200 }   
     } catch (error) {
         res.statusCode = 503

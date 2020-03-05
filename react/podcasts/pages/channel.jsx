@@ -2,6 +2,7 @@ import 'isomorphic-fetch'
 import Layout from '../components/Layout'
 import ChannelGrid from '../components/ChannelGrid'
 import PodcastList from '../components/PodcastList'
+// _error es una pagina de Next.js que permite personalizar los mensajes de error.
 import Error from './_error';
 
 export default class extends React.Component {
@@ -10,17 +11,22 @@ export default class extends React.Component {
     let idChannel = query.id
 
     try {
+      // Si hay que hacer varias requests, se pueden paralelizar con Promise.all() para evitar sumar 
+      // el tiempo de cada request por la cola que se hace por hacer peticiones individualmente.
       let [reqChannel, reqSeries, reqAudios] = await Promise.all([
         fetch(`https://api.audioboom.com/channels/${idChannel}`),
         fetch(`https://api.audioboom.com/channels/${idChannel}/child_channels`),
         fetch(`https://api.audioboom.com/channels/${idChannel}/audio_clips`)
       ])
 
+      // La API de fetch retorna el estatus que obtuvo de una peticion.
       if( reqChannel.status >= 400 ) {
+
         res.statusCode = reqChannel.status
         return { channel: null, audioClips: null, series: null, statusCode: reqChannel.status }
       }
 
+      // Obtenemos el contenido a renderizar de cada una de las peticiones de las API's
       let dataChannel = await reqChannel.json()
       let channel = dataChannel.body.channel
 

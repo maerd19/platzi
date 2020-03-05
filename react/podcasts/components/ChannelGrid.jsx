@@ -4,7 +4,11 @@ import Link from 'next/link';
 const ChannelGrid = ({ channels }) => (
     <div className="channels">
         { channels.map(channel => (
-            <Link href={`/channel?id=${ channel.id }`} prefetch key={channel.id}>
+            
+            // Prefetch indica a <Link> que el contenido solicitado tiene que cargar por adelantado 
+            // y permite un ahorro de algunos segundos en la carga. 
+            // <Link href={`/channel?id=${ channel.id }`} prefetch key={channel.id}>
+            <Link href={`/channel?id=${ channel.id }`} key={channel.id}>
                 <a className="channel">
                     <img src={channel.urls.banner_image.original} alt={channel.title}/>
                     <h2>{ channel.title }</h2>
@@ -12,6 +16,8 @@ const ChannelGrid = ({ channels }) => (
             </Link >
         )) }
 
+    {/* css grid nos permitira implementar layouts a nivel componente */}
+    {/* grid-template-columns nos permite crear columnas virtuales cuando se modifica el tamano del viewport */}
     <style jsx>{`
         .channels {
             display: grid;

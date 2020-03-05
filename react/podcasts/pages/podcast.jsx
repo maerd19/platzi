@@ -9,7 +9,17 @@ const podcast = ({ clip }) => (
         <div className='modal'>
             <div className='clip'>
                 <nav>
-                    <Link href={`/channel?id=${clip.channel.id}`}>
+                    {/* A diferencia del react-router que contiene un componente <Link> que funciona solo */}
+                    {/* <Link> en Next.js si necesita de otro elemento dentro para funcionar. */}
+                    {/* <Link href={`/channel?id=${clip.channel.id}`}>
+                        <a className='close'>&lt; Volver</a>
+                    </Link> */}
+                    <Link route="channel"
+                          params={{
+                                slug: slug(clip.channel.title),
+                                id: clip.channel.id
+                          }}
+                    >
                         <a className='close'>&lt; Volver</a>
                     </Link>
                 </nav>
