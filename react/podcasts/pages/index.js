@@ -24,7 +24,6 @@ index.getInitialProps = async ({ res }) => {
     try {
         let req = await axios.get('https://api.audioboom.com/channels/recommended');
         let data = await req.data;
-        console.log('data', data);
         return { channels : data.body, statusCode: 200 }   
     } catch (error) {
         res.statusCode = 503

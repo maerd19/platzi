@@ -5,29 +5,14 @@ const PodcastList = ({ podcasts }) => (
     <>
         { podcasts.map(podcast => (
             // <Link href={`/podcast?id=${podcast.id}`} prefetch key={podcast.id}>
-            // <Link href={`/podcast?id=${podcast.id}`} key={podcast.id}>
-            //     <a className='podcast'>
-            //         <h3>{ podcast.title }</h3>
-            //         <div className='meta'>
-            //         { Math.ceil(podcast.duration / 60) } minutes
-            //         </div>
-            //     </a>
-            // </Link>
-            <Link route="podcast"
-                  params={{
-                        slugChannel: slug(podcast.channel.title),
-                        idChannel: podcast.channel.id,
-                        slug: slug(podcast.title),
-                        id: podcast.id
-                        }}
-                   key={podcast.id}>
-                <a className="podcast">
-                    <h3>{podcast.title}</h3>
+            <Link href={`/podcast?id=${podcast.id}`} key={podcast.id}>
+                <a className='podcast'>
+                    <h3>{ podcast.title }</h3>
                     <div className='meta'>
-                        { Math.ceil(podcast.duration / 60) } minutes
+                    { Math.ceil(podcast.duration / 60) } minutes
                     </div>
                 </a>
-            </Link>  
+            </Link>            
         )) }
 
         <style jsx>{`

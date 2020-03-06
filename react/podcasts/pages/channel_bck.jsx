@@ -50,21 +50,22 @@ const channel = ({ channel, audioClips, series, statusCode }) => {
 };
 
 channel.getInitialProps = async ({ query, res }) => {
-  let idChannel = query.id;
+  // let idChannel = query.id;
+  console.log('query', query);
   let URL1 = `https://api.audioboom.com/channels/${idChannel}`
   let URL2 = `https://api.audioboom.com/channels/${idChannel}/audio_clips`
   let URL3 = `https://api.audioboom.com/channels/${idChannel}/child_channels`
   
   try {
-      // axios.all([ reqChannel, reqAudios, reqSeries ]).then(axios.spread((...responses) => {
-      //   console.log('responses', [...responses])
-      //   // const responseOne = responses[0]
-      //   // const responseTwo = responses[1]
-      //   // const responesThree = responses[2]
-      //   // use/access the results 
-      // })).catch(errors => {
-      //   // react on errors.
-      // })
+      axios.all([ reqChannel, reqAudios, reqSeries ]).then(axios.spread((...responses) => {
+        console.log('responses', [...responses])
+        // const responseOne = responses[0]
+        // const responseTwo = responses[1]
+        // const responesThree = responses[2]
+        // use/access the results 
+      })).catch(errors => {
+        // react on errors.
+      })
       
       let [ reqChannel, reqAudios, reqSeries ] = await Promise.all([ 
         axios.get(URL1).then(null, e => {

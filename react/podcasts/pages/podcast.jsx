@@ -11,17 +11,9 @@ const podcast = ({ clip }) => (
                 <nav>
                     {/* A diferencia del react-router que contiene un componente <Link> que funciona solo */}
                     {/* <Link> en Next.js si necesita de otro elemento dentro para funcionar. */}
-                    {/* <Link href={`/channel?id=${clip.channel.id}`}>
+                    <Link href={`/channel?id=${clip.channel.id}`}>
                         <a className='close'>&lt; Volver</a>
-                    </Link> */}
-                    <Link route="channel"
-                          params={{
-                                slug: slug(clip.channel.title),
-                                id: clip.channel.id
-                          }}
-                    >
-                        <a className='close'>&lt; Volver</a>
-                    </Link>
+                    </Link>                    
                 </nav>
 
                 <picture>
@@ -103,8 +95,9 @@ const podcast = ({ clip }) => (
 
 export default podcast;
 
-podcast.getInitialProps = async ({ query }) => {
-    let idPodcast = query.id;
+podcast.getInitialProps = async ({ query: { id } }) => {
+    
+    let idPodcast = id;
 
     const res = await axios.get(`https://api.audioboom.com/audio_clips/${idPodcast}.mp3`);
     const data = await res.data;
