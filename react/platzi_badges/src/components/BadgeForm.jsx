@@ -13,7 +13,8 @@ class BadgeForm extends Component {
               className="form-control"
               type="text"
               name="firstName"
-              // El prop value convierte los inputs de no controlados a controlados dotandolos de una unica fuente de informacion proveniente de los props.
+              // No es ideal que cada input guarde su propio valor y al tiempo la está guardando en setState por lo que usaremos el prop value para evitar esto.
+              // value convierte los inputs de no controlados a controlados dotandolos de una unica fuente de informacion proveniente de los props.
               value={this.props.formValues.firstName}
             />
           </div>

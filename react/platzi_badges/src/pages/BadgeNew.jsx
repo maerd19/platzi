@@ -13,7 +13,8 @@ class BadgeNew extends Component {
   // Se coloca el estado en una ubicacion en la que este disponible para pasarse como props a los componentes.
   state = {
 	loading: false,
-	error: null,
+  error: null,
+  // Inicializar los valores del estado para evitar errores.
         form: {
             firstName: '',
             lastName: '',
@@ -24,9 +25,12 @@ class BadgeNew extends Component {
   };
 
   handleChange = e => {
+    // setState en un metodo de la clase component
     this.setState({
       form: {
+        // Agregamos al state todos los valores que tenia anteriormente usando el spread operator
         ...this.state.form,
+        // Se modifica el valor del state que corresponda al input que llamo este metodo en BadgeForm
         // El input que llame a esta funcion reemplazara el valor en los corchetes por su nombre.
         [e.target.name]: e.target.value,
       },

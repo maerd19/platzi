@@ -5,8 +5,9 @@ import Navbar from './Navbar';
 const Layout = props => 
     (
         <Fragment>
+            {/* Gracias al layout podemos hacer persistente el navbar en todas las paginas de la aplicacion */}
             <Navbar />
-            {console.log('props', props)}
+            {/* children permite renderizar lo que pasa como contenido dentro de Layout */}
             {props.children}
         </Fragment>
     );
